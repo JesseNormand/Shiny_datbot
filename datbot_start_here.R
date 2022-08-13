@@ -4,6 +4,7 @@ library(janitor)
 library(caret)
 library(dplyr)
 library(tidyr)
+library(gmodels)
 tidymodels_prefer()
 
 
@@ -35,3 +36,14 @@ cbind(freqWork_type, relfreqWork_type)
 freqClient = table(Client)
 relfreqClient = table(Client)/6759
 cbind(freqClient, relfreqClient)
+
+#Compute distribution between categorical variables using joint table library(gmodels)
+joint <- CrossTable(Client, Work_type, prop.chisq = FALSE)
+
+#
+
+joint_counts <- joint$t
+
+barplot(joint_counts, beside = FALSE, col = rainbow(4), ylab = 'Frequency', xlab = 'Work Order Type')
+legend('topright', c('Client 1', 'Client 2', 'Client 3', 'Client 4'), pch = 15,
+                     col = rainbow(4))
