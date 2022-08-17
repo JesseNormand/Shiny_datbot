@@ -18,28 +18,8 @@ ui <- fluidPage(
   #            font-style:bold;}"),
   sidebarLayout(
     sidebarPanel(
+      tableOutput("text")
       
-      
-      # sliderInput(inputId = "trials",
-      #             label = "Select the number of trials to run",
-      #             min = 500,
-      #             max = 1000,
-      #             value = 500),
-      # 
-      # sliderInput(inputId = "min",
-      #             label = "Select mininmal expected revenue",
-      #             min = 100000,
-      #             max = 300000,
-      #             value = 100000),
-      # 
-      # sliderInput(inputId = "max",
-      #             label = "Select maximum expected revenue",
-      #             min = 100000,
-      #             max = 300000,
-      #             value = 185000),
-      # 
-      # textOutput(outputId = "text")
-  
 ),
 
 
@@ -81,6 +61,13 @@ server <- function(input, output, session) {
 
 })
   
+  output$text <- renderTable({
+  dfInput() %>% 
+    count(ifelse(sentiment > 0, "Positive", "Negative")) %>% 
+      as.data.frame()
+  
+})
+
 }
 
 
