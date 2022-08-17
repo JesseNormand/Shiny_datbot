@@ -33,6 +33,10 @@ dat_neg <- dat_neg[1:10000,]
   
 dat_reviews <- as.data.frame(dat_neg)
 
+#Create random values to add to our demonstration
+
+dat_reviews$cohort <- paste(sample(x = c("Cohort North", "Cohort South", "Cohort East"), size = 10000, replace = TRUE))
+
 #Begin sentiment analysis
 
 dat_reviews %>% 
@@ -47,6 +51,27 @@ dat_reviews_senti %>%
   ggplot() + geom_density(aes(sentiment))
 
 
+dat_reviews_senti %>% 
+  ggplot() + geom_boxplot(aes(x = corhort, y = sentiment))
+  
+
+#Compute negative and positive
+
+dat_reviews_senti %>% 
+count(ifelse(sentiment > 0, "Positive", "Negative"))
+
+  #vis
+dat_reviews_senti %>% 
+  mutate(sentiment_scores = ifelse(sentiment > 0, "Positive", "Negative")) %>% 
+  count(cohort, sentiment_scores) %>% 
+  ggplot() + geom_col(aes(x = cohort, y = n, fill = sentiment_scores)) 
+
+#highlight
+
+sentiment_by(dat_reviews_senti) %>% 
+  get_sentences() %>% 
+  sentiment_by() %>% 
+  highlight()
 
 
 
