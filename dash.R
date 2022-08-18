@@ -13,7 +13,7 @@ ui <- dashboardPage(
   dashboardBody(
     # Boxes need to be put in a row (or column)
     fluidRow(
-      box(plotOutput("barplot", height = 250)),
+      box(plotlyOutput("barplot", height = 250)),
       box(plotlyOutput("plot", height = 250)),
       
       # box(
@@ -35,24 +35,24 @@ server <- function(input, output) {
   
  
   # output$plot <- renderPlot({
-  p <- reactive({dat_reviews %>% 
-  ggplot(dfInput()) + geom_density(aes(sentiment),color="blue", fill="lightblue") +
+  output$plot <- renderPlotly({
+  p <- ggplot(dfInput()) + geom_density(aes(sentiment),color="blue", fill="lightblue") +
         geom_vline(aes(xintercept=mean(sentiment)),
                    color="blue", linetype="dashed", size=.5)
     fig <- ggplotly(p)
+
+  
   })
   
-  output$plot <- renderPlotly({
+  #Plotlybar
   
-    fig
-    
-  })
-  output$barplot <- renderPlot({
-    dfInput()%>% 
+  output$barplot <- renderPlotly({ 
+   p2 <-  dfInput()%>% 
       mutate(sentiment_scores = ifelse(sentiment > 0, "Positive", "Negative")) %>% 
       count(cohort, sentiment_scores) %>% 
-      ggplot() + geom_col(aes(y = cohort, x = n, fill = sentiment_scores))  
+      ggplot() + geom_col(aes(y = cohort, x = n, fill = sentiment_scores)) 
     
+    fig2 <- ggplotly(p2)
     
   })
   
