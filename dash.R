@@ -2,20 +2,22 @@
 library(shinydashboard)
 library(plotly)
 library(sentimentr)
+library(DT)
 
 dat_reviews <- read.csv("dat_reviews.csv")
 
 attach(dat_reviews)
 
 ui <- dashboardPage(
-  dashboardHeader(title = "Text Sentiment Analysis"),
-  dashboardSidebar(),
+  dashboardHeader(title = "Reviews Sentiment Analysis"),
+  dashboardSidebar(disable = TRUE),
   dashboardBody(
     # Boxes need to be put in a row (or column)
     fluidRow(
       box(plotlyOutput("barplot", height = 250)),
       box(plotlyOutput("plot", height = 250)),
-      
+      box(plotlyOutput("boxplot", height = 250)),
+      box(dataTableOutput("text"))
       # box(
         # title = "Controls",
         # box(plotOutput("plot", height = 250))
@@ -56,11 +58,20 @@ server <- function(input, output) {
     
   })
   
-  output$text <- renderTable({
-    dfInput() %>% 
-      count(ifelse(sentiment > 0, "Positive", "Negative")) %>% 
-      as.data.frame()
+  #Boxplot
+  output$boxplot <- renderPlotly({ 
+  p3 <- dfInput() %>% 
+    ggplot() + geom_boxplot(aes(x = cohort, y = sentiment)) + theme_light()
+  fig2 <- ggplotly(p3)
+  
 })
+  
+  output$text <- renderDataTable({ 
+    sentiment_by(dfInput()) %>% 
+      get_sentences() %>% 
+      as.data.frame()
+  
+}) 
   
 }
 
