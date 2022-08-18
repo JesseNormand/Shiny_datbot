@@ -18,7 +18,9 @@ ui <- fluidPage(
   #            font-style:bold;}"),
   sidebarLayout(
     sidebarPanel(
-      tableOutput("text")
+      tableOutput("text"),
+      tableOutput("textplot"),
+      actionButton("button", "Analyze Text")
       
 ),
 
@@ -26,9 +28,10 @@ ui <- fluidPage(
 mainPanel(
   
   tabsetPanel(type = "tabs",
-              tabPanel("Density", plotOutput("plot")),
-              tabPanel("Bar Plot", plotOutput("barplot"))
-             
+              tabPanel("Bar Plot", plotOutput("barplot")),
+              tabPanel("Density", plotOutput("plot"))
+              
+              # tabPanel("Text Plot", plotOutput("textplot"))
               
   )
 )
@@ -67,10 +70,21 @@ server <- function(input, output, session) {
       as.data.frame()
   
 })
+  
+  text_an <- eventReactive(input$button, {
+    sentiment_by(dfInput()) %>% 
+      get_sentences() %>% 
+      sentiment_by() %>% 
+      highlight()
+
+})
+  
+  output$textplot <- renderDataTable({
+    table(text_an())
+  
+})
 
 }
-
-
 
 #Create a shiny appp object -------------------------------------------------
 
