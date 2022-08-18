@@ -1,5 +1,6 @@
 #datbot_senti
 #Sentimenet Analysis
- In this app I processed and linked a data set of reviews from hotel.com. I manipulated the data to break it up into regional cohorts to mimic a large property portfolio scenario. 
- The app allows us to keep track of the sentiment of our resident's communications to ensure we can stay out in front of any potential issues. The app aslo gives us the ability to search for key workds in the communications such "leak", or "broken" so that we are able to be proactive with our services.
- The charts in this dashboard show that our sentiment scoring is abobe nuetrual and skewed towads the right.
+I developed this application to process and link a data set of reviews. In this demonstration I utilized a data set from hotels.com. I manipulated the data into regional cohorts to mimic a large property portfolio scenario. 
+ The app allows us to keep track of the sentiment of our resident's communications to ensure we can stay out in front of any potential issues. The app also gives us the ability to search the communications for key words like "leak" or "broken" so that we can be proactive with our services.
+ The charts in this dashboard indicates that our sentiment scoring is above neutral and skewed towards the right.
+
